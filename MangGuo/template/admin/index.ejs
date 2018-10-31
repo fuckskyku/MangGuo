@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>芒果很黄后台管理系统</title>
+		<link rel="stylesheet" href="../../static/css/page.css">
+		<script src="../../static/js/jquery-1.11.3.min.js"></script>
+		<script src="../../static/js/leftTime.min.js"></script>
+		<style>
+			html {
+				height: 100%;
+			}
+			
+			body {
+				margin: 0;
+				height: 100%;
+				background: #fff;
+			}
+			
+			canvas {
+				display: block;
+				width: 100%;
+				height: 100%;
+			}
+			::-webkit-scrollbar {/*隐藏滚轮*/
+				display: none;
+			}
+			.content-wrap{
+				width: 800px;
+				height: 500px;
+				position: absolute;
+				top: 0;
+				bottom: 0;
+				left: 0;
+				right: 0;
+				margin: auto;
+				border: 1px solid #EE6123;
+				border-radius: 8px;
+				overflow-y: scroll;
+			}
+			.head p{
+				margin-top: 60px;
+			}
+			h2{
+				line-height: 60px;
+				background: #EE6123;
+				color: white;
+			}
+			.color{
+				color: white;
+			}
+			.color1{
+				color: white;
+				margin-top: 10px; 
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="canvas"></canvas>
+		<div class="box"></div>
+		<div class="page">
+			<% include components/top.inc.ejs%>
+			<div class="content-wrap">
+				<div class="head">
+					<h2>芒果很黄后台管理系统</h2>
+					<p class="color"><span>恭喜登录成功!</span></p>
+				</div>
+				<div class="color1">本次可操作时间：20分钟</div>
+				<div class="color1">剩余时间：<span class="second">1200</span></div>
+				
+			</div>
+		</div>
+	</body>
+	<script src="../../static/js/background.js"></script>
+	<script type="text/javascript">
+		$(function(){
+			//秒倒计
+			var $time = $(".second");
+			if(!$time.hasClass("on")){
+				$.leftTime(20*60,function(d){
+					if(d.status){
+						$time.addClass("on");
+						$time.html((parseInt(d.m)*60+parseInt(d.s))+"秒后重新登录");
+					}else{
+						$time.removeClass("on");
+						$time.html("请重新登录");
+					}
+				},true);
+			}
+			
+		});
+	</script>
+</html>

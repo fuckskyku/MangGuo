@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<link rel="stylesheet" type="text/css" href="../../static/css/style.css"/>
+</head>
+<body>
+	<canvas></canvas>
+	<div class="page">
+		<div class="head"><% include components/top.inc.ejs%></div>
+      
+          
+       <div class="content-wrap">
+        <div>
+			<form action="?" method="post">
+				标题:<input class="input" type="text" name="title"/><br>
+				
+				链接:<input class="input" type="text" name="imgUrl"/><br>
+				<input class="add" type="submit" value="添加">
+			</form>
+       </div>
+       <table border="1" width="100%">
+       	  <thead>
+       	  	<tr>
+       	  		<th>ID</th>
+       	  		<th>标题</th>
+       	  		
+       	  		<th>链接</th>
+       	  		<th>操作</th>
+       	  	</tr>
+       	  </thead>
+       	  <tbody>
+                 <% for(var i=0;i<intro.length;i++){ %>
+       	  	<tr>
+       	  	 <td><%=intro[i].ID%></td>
+       	  	  <td><%=intro[i].title%></td>
+       	  	   
+       	  	    <td><%=intro[i].imgUrl%></td>
+       	  	     <td>
+       	  	     <a href="?act=mod&id=<%=intro[i].ID%>">修改</a>
+       	  	     <a href="?act=del&id=<%=intro[i].ID%>" onClick="return confirm('您真的离开吗')">删除</a>
+       	  	     </td>
+       	  	</tr>
+                  <% } %>
+       	  </tbody>
+       </table>
+        <% if(typeof  mod_data!='undefined'){ %>
+        <div class="shadow"></div>
+		   <div class="mod_dialog">
+				<form action="?" method="post">
+					<input type="hidden" name="mod_id" value="<%=mod_data.ID%>">
+					标题:<input class="input" type="text" name="title" value="<%=mod_data.title%>"/><br>
+					链接:<input class="input" type="text" name="imgUrl" value="<%=mod_data.imgUrl%>" /><br>
+					<input class="add" type="submit" value="修改"><br>
+					<a href="/admin/intro" class="cancle">取消</a>
+				</form>
+		   </div>
+      <% } %>
+	</div>
+	<script>
+		document.addEventListener('touchmove', function(e) {
+			e.preventDefault()
+		})
+		var c = document.getElementsByTagName('canvas')[0],
+		    x = c.getContext('2d'),
+		    pr = window.devicePixelRatio || 1,
+		    w = window.innerWidth,
+		    h = window.innerHeight,
+		    f = 90,
+		    q,
+		    r = 0,
+		    u = Math.PI * 2,
+		    v = Math.cos,
+		    z = Math.random
+		
+		  c.width = w * pr
+		  c.height = h * pr
+		  x.scale(pr, pr)
+		  x.globalAlpha = 0.6
+		
+		  function i() {
+		    x.clearRect(0, 0, w, h)
+		    q = [{ x: 0, y: h * .7 + f }, { x: 0, y: h * .7 - f }]
+		    while (q[1].x < w + f) d(q[0], q[1])
+		  }
+		
+		  function d(i, j) {
+		    x.beginPath()
+		    x.moveTo(i.x, i.y)
+		    x.lineTo(j.x, j.y)
+		    var k = j.x + (z() * 2 - 0.25) * f,
+		      n = y(j.y)
+		    x.lineTo(k, n)
+		    x.closePath()
+		    r -= u / -50
+		    x.fillStyle = '#' + (v(r) * 127 + 128 << 16 | v(r + u / 3) * 127 + 128 << 8 | v(r + u / 3 * 2) * 127 + 128).toString(16)
+		    x.fill()
+		    q[0] = q[1]
+		    q[1] = { x: k, y: n }
+		  }
+		
+		  function y(p) {
+		    var t = p + (z() * 2 - 1.1) * f
+		    return (t > h || t < 0) ? y(p) : t
+		  }
+		
+		  document.onclick = i
+		  document.ontouchstart = i
+		  i()
+	</script>
+</body>
+</html>
